@@ -1,0 +1,10 @@
+---
+- name: My First S3 Bucket
+  hosts: localhost
+  gather_facts: true
+  tasks:
+    - name: Create S3 bucket
+      amazon.aws.s3_bucket:
+        name: "my-bucket-{{ ansible_date_time.epoch }}"
+        state: present
+        region: "ap-south-1"

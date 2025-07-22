@@ -1,0 +1,34 @@
+# Ignore Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtualenv
+venv/
+ENV/
+env/
+.venv/
+
+# Ignore Ansible artifacts
+*.retry
+.vault_pass
+*.log
+
+# Ignore AWS credentials and files
+.aws/
+*.pem
+*.key
+*.secrets
+*.credentials
+
+# Ignore Terraform state (if used later)
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# Ignore system/editor specific files
+.DS_Store
+.idea/
+.vscode/
+Thumbs.db

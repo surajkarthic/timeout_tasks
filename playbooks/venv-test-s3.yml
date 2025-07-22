@@ -1,0 +1,19 @@
+---
+- name: Test S3 with Virtual Environment
+  hosts: localhost
+  gather_facts: true
+  
+  tasks:
+    - name: Display Python environment
+      debug:
+        msg: "Using Python: {{ ansible_python_interpreter | default('default') }}"
+    
+    - name: Create S3 bucket
+      amazon.aws.s3_bucket:
+        name: "timeout-test-bucket-{{ ansible_date_time.epoch }}"
+        state: present
+        region: us-east-1
+        
+    - name: Success message
+      debug:
+        msg: "S3 bucket created successfully using virtual environment!"
