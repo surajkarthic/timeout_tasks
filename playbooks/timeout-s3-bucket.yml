@@ -10,9 +10,9 @@
     
     - name: Create S3 bucket
       amazon.aws.s3_bucket:
-        name: "timeout-test-bucket-{{ ansible_date_time.epoch }}"
+        name: "timeout-bucket-{{ ansible_date_time.epoch }}"
         state: present
-        region: us-east-1
+        region: ap-south-1
         
     - name: Success message
       debug:
