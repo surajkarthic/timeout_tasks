@@ -10,7 +10,7 @@
     
     - name: Create S3 bucket
       amazon.aws.s3_bucket:
-        name: "timeout-bucket-{{ ansible_date_time.epoch }}"
+        name: "timeout-poc-bucket-{{ ansible_date_time.epoch }}"
         state: present
         region: ap-south-1
         
