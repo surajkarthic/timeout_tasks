@@ -1,0 +1,38 @@
+---
+- name: DANGER - Delete ALL S3 buckets in specified regions
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: "Fail if regions are not provided"
+      ansible.builtin.fail:
+        msg: "This playbook requires a list of regions. e.g., --extra-vars \"aws_regions=['us-east-1']\""
+      when: aws_regions is not defined or aws_regions | length == 0
+
+    - name: "FINAL WARNING: Confirm deletion across multiple regions"
+      ansible.builtin.pause:
+        prompt: |
+          WARNING: This will attempt to delete ALL buckets in the following regions: {{ aws_regions }}.
+          This action is permanent and will delete all data.
+          Press ENTER to continue or CTRL+C, A to abort.
+
+    - name: "Process region: {{ region }}"
+      loop: "{{ aws_regions }}"
+      loop_control:
+        loop_var: region
+      block:
+        - name: "Find ALL S3 buckets in region '{{ region }}'"
+          amazon.aws.s3_bucket_info:
+            region: "{{ region }}"
+          register: s3_buckets_info
+
+        - name: "Ensure all buckets in '{{ region }}' are deleted"
+          amazon.aws.s3_bucket:
+            name: "{{ item.name }}"
+            state: absent
+            region: "{{ region }}"
+            force: true
+          loop: "{{ s3_buckets_info.buckets }}"
+          loop_control:
+            label: "{{ item.name }}"
+            loop_var: item
