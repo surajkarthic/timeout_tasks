@@ -1,0 +1,19 @@
+---
+# This file contains the logic to be looped for each region.
+# The 'region' variable is passed from the main playbook's loop.
+
+- name: "Find ALL S3 buckets in region '{{ region }}'"
+  amazon.aws.s3_bucket_info:
+    region: "{{ region }}"
+  register: s3_buckets_info
+
+- name: "Ensure all buckets in '{{ region }}' are deleted"
+  amazon.aws.s3_bucket:
+    name: "{{ item.name }}"
+    state: absent
+    region: "{{ region }}"
+    force: true
+  loop: "{{ s3_buckets_info.buckets }}"
+  loop_control:
+    label: "{{ item.name }}"
+    loop_var: item
